@@ -1,0 +1,882 @@
+// Extra small screen / phone
+$screen-xs-min: 480px;
+
+// Small screen / tablet
+$screen-sm-min: 768px;
+
+// Medium screen / desktop
+$screen-md-min: 992px;
+
+// Large screen / wide desktop
+$screen-lg-min: 1200px;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-sm-max: ($screen-md-min - 1);
+$screen-md-max: ($screen-lg-min - 1);
+
+@mixin respondTo($media) {
+  @if $media == "xs" {
+    @media only screen and (max-width: $screen-xs-max) {
+      @content;
+    }
+  }
+
+  @else if $media == "sm" {
+    @media only screen and (max-width: $screen-sm-max) and (min-width: $screen-sm-min) {
+      @content;
+    }
+  }
+
+  @else if $media == "md" {
+    @media only screen and (max-width: $screen-md-max) and (min-width: $screen-md-min) {
+      @content;
+    }
+  }
+
+  @else if $media == "lg" {
+    @media only screen and (min-width: $screen-lg-min) {
+      @content;
+    }
+  }
+}
+@mixin respondToAbove($media) {
+  @if $media == "xs" {
+    @media only screen and (min-width: $screen-xs-max) {
+      @content;
+    }
+  }
+
+  @else if $media == "sm" {
+    @media only screen and (min-width: $screen-sm-min) {
+      @content;
+    }
+  }
+
+  @else if $media == "md" {
+    @media only screen and (min-width: $screen-md-min) {
+      @content;
+    }
+  }
+
+  @else if $media == "lg" {
+    @media only screen and (min-width: $screen-lg-min) {
+      @content;
+    }
+  }
+}
+@mixin respondToBelow($media) {
+  @if $media == "xs" {
+    @media only screen and (max-width: $screen-xs-max) {
+      @content;
+    }
+  }
+
+  @else if $media == "sm" {
+    @media only screen and (max-width: $screen-sm-max) {
+      @content;
+    }
+  }
+
+  @else if $media == "md" {
+    @media only screen and (max-width: $screen-md-max) {
+      @content;
+    }
+  }
+
+  @else if $media == "lg" {
+    @media only screen {
+      @content;
+    }
+  }
+}
+@mixin respondToTablet {
+  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max){
+    @content;
+  }
+}
+@mixin respondToSmall-n-Medium {
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max){
+    @content;
+  }
+}
+@mixin respondToMobile() {
+  @include respondTo(xs){
+    @content
+      }
+}
+@mixin respondToDesktop() {
+  @include respondToAbove(md){
+    @content
+      }
+}
+@mixin clearfix {
+  &:before {
+    content: "";
+    display: table;
+  }
+
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+@mixin rounded_corners($radius: 5px) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+}
+@mixin input {
+  padding: 0 20px;
+  margin: 0.5em 0;
+  border: 1px solid darken(#e1e1e1, 20%);
+  height: 40px;
+  display: block;
+  width: 80%;
+  max-width: 80%;
+  background: rgba(255,255,255,.5);
+  @include respondTo(xs) {
+    width: 100%;
+    max-width: 100%;
+  }
+  outline: none;
+}
+
+// Provides a cross-browser method to implement `display: inline-block;`
+@mixin inline-block($alignment: middle) {
+  display: -moz-inline-stack;
+  display: inline-block;
+  @if $alignment and $alignment != none {
+    vertical-align: $alignment;
+  }
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
+@mixin background_gradient($min_color, $max_color,$color_stop1:0%, $color_stop2:100%) {
+  background: $min_color;
+  background: -moz-linear-gradient(top, $min_color $color_stop1, $max_color $color_stop2);
+  background: -o-linear-gradient(top, $min_color $color_stop1, $max_color $color_stop2);
+  background: -webkit-linear-gradient(top, $min_color $color_stop1, $max_color $color_stop2);
+  background: -ms-linear-gradient(top, $min_color $color_stop1, $max_color $color_stop2);
+  background: -webkit-gradient(linear,left top,left bottom,color-stop($color_stop1/100%, $min_color),color-stop($color_stop2/100%, $max_color));
+  background: linear-gradient(to bottom, $min_color $color_stop1, $max_color $color_stop2);
+  zoom: 1; // fix for ie7 issue
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#{$min_color}, endColorStr=#{$max_color});
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#{$min_color}, endColorStr=#{$max_color});
+}
+@mixin box-shadow($value) {
+  -webkit-box-shadow: $value;
+  -moz-box-shadow: $value;
+  box-shadow: $value;
+}
+@mixin font_family($font_type,$font_stretch:'normal') {
+  @if $font-stretch == "condensed" {
+    font-family: $font-condensed;
+  }
+
+  @else if $font_type == "primary" {
+    font-family: $font-primary;
+  }
+  @else {
+    font-family: $font-secondary;
+  }
+}
+@mixin font-size($sizeValue) {
+  font-size: ($sizeValue * 10) + px;
+  font-size: $sizeValue + rem;
+}
+
+//-------------
+@mixin shadow-box {
+  border: 1px solid darken(#e1e1e1, 5%);
+  @include rounded_corners(5px);
+  box-shadow: 4px 4px 5px #e1e1e1;
+}
+@mixin transition($value) {
+  transition: $value;
+  -moz-transition: $value;
+  -webkit-transition: $value;
+}
+@mixin flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+@mixin flex-grow($value) {
+  -webkit-box-flex: $value;
+  -webkit-flex: $value;
+  -ms-flex: $value;
+  flex: $value;
+}
+@mixin flex-wrap {
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+@mixin align-items($value) {
+  -ms-align-items: $value;
+  -moz-align-items: $value;
+  -webkit-align-items: $value;
+  align-items: $value;
+}
+@mixin justify-content($value) {
+  -ms-justify-content: $value;
+  -moz-justify-content: $value;
+  -webkit-justify-content: $value;
+  justify-content: $value;
+}
+@mixin flex-direction($value) {
+  -ms-flex-direction: $value;
+  -moz-flex-direction: $value;
+  -webkit-flex-direction: $value;
+  flex-direction: $value;
+}
+@mixin flex-basis($value) {
+  -webkit-box-flex: $value;
+  -webkit-flex: $value;
+  -ms-flex: $value;
+  flex: $value;
+}
+@mixin fontAwesome($fsize,$ascii,$fcolor) {
+  font: normal normal normal $fsize/1 FontAwesome;
+  content: $ascii;
+  color: $fcolor;
+}
+@mixin input-placeholder-font($value1, $value2) {
+  input::-webkit-input-placeholder {
+    color: $value1;
+    @include font-size($value2);
+  }
+
+  input::-moz-placeholder {
+    color: $value1;
+    @include font-size($value2);
+  }
+
+  input:-moz-placeholder {
+    color: $value1;
+    @include font-size($value2);
+  }
+
+  input:-ms-input-placeholder {
+    color: $value1;
+    @include font-size($value2);
+  }
+}
+@mixin radio-button {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  z-index: 1;
+  height: 25px;
+  cursor: pointer;
+
+  &:checked + label:after {
+    content: '';
+    position: absolute;
+    background: #000;
+    @include rounded_corners(50%);
+    width: 9px;
+    height: 9px;
+    left: 3px;
+    top: 3px;
+    bottom: 4px;
+    pointer-events: none;
+  }
+
+  & + label {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 20px;
+    margin-top: 10px;
+    line-height: 15px;
+    height: 15px;
+
+    &:before {
+      font-weight: normal;
+      content: '';
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin-right: 10px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 1px;
+      background-color: #fff;
+      @include rounded_corners(50%);
+      border: 1px solid darken(#e1e1e1, 15%);
+    }
+  }
+}
+@mixin check-button {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  z-index: 1;
+  height: 25px;
+  cursor: pointer;
+
+  &:checked + label:after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 4.5px;
+    left: 3px;
+    bottom: 7px;
+    border-color: #000;
+    border-style: solid;
+    border-width: 0 0 2px 2px;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    pointer-events: none;
+  }
+
+  & + label {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 20px;
+    margin-top: 10px;
+    line-height: 15px;
+    height: 15px;
+
+    &:before {
+      font-weight: normal;
+      content: '';
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin-right: 10px;
+      position: absolute;
+      left: 0;
+      bottom: 1px;
+      background-color: #fff;
+      border: 1px solid darken(#e1e1e1, 15%);
+    }
+  }
+}
+
+@mixin flat-shadow{
+  @include box-shadow(0 5px 10px -4px rgba(0,0,0,0.3));
+}
+
+
+@mixin rotate($angle) {
+  -ms-transform:rotate($angle);
+  -webkit-transform:rotate($angle);
+  transform:rotate($angle);
+}
+@mixin scale($value-1,$value-2) {
+  -ms-transform:scale($value-1,$value-2);
+  -webkit-transform:scale($value-1,$value-2);
+  transform:scale($value-1,$value-2);
+}
+@mixin skew($value-1,$value-2) {
+  -ms-transform:skew($value-1,$value-2);
+  -webkit-transform:skew($value-1,$value-2);
+  transform:skew($value-1,$value-2);
+}
+@mixin translateY($value) {
+  -ms-transform:translateY($value);
+  -webkit-transform:translateY($value);
+  transform:translateY($value);
+}
+
+@mixin transform($value) {
+  -ms-transform:($value);
+  -webkit-transform:($value);
+  transform:($value);
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-o-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+
+@mixin animation($values){
+  -webkit-animation: ($values);
+  -moz-animation: ($values);
+  -ms-animation: ($values);
+  animation: ($values);
+}
+@mixin close-icon{
+  font-size: 0 !important;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  right: 20px;
+  top: 20px;   
+  font-size: 0px;
+  cursor: pointer;
+  z-index: 9;
+  border: 0;
+  background: transparent;
+  &:before,&:after{
+    content: '';
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    height: 2px;
+    background: #fff;
+    width: 50%;
+    transition: all .25s;
+    opacity: 0;
+  }
+  &:before{
+    transform: rotate(45deg);
+    opacity: 1;
+  }
+  &:after{
+    transform: rotate(-45deg);
+    opacity: 1;
+  }
+}
+@mixin radio-button{
+  display: none;
+  & + *{
+    position: relative;
+    padding-left: 30px;
+    margin-left: 10px;
+    &:before{
+      content: '';
+      width: 20px;
+      @include rounded_corners(50%);
+      height: 20px;
+      @include box-shadow(inset 0px 1px 5px rgba(0,0,0,0.5));
+      text-indent: 30px;
+      left: 0;
+      top: 0;
+      position: absolute;
+      cursor: pointer;
+    }
+    &:after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      position: absolute;
+      z-index: 1;
+      background: $dbc;
+      @include rounded_corners(50%);
+      @include transition(all .25s);
+      top: 0;
+      left: 0;
+      @include transform(scale(0));
+    }
+  }
+  &:checked + *:after {
+    @include transform(scale(.4));
+    @include transition(all .25s cubic-bezier(0.68,0.55,0.265,3));
+  }
+}
+@mixin check-box{
+  display: none;
+  & + *{
+    position: relative;
+    padding-left: 30px;
+    margin-left: 10px;
+    &:before{
+      content: '';
+      width: 18px;
+      height: 18px;
+      @include box-shadow(inset 0px 1px 5px rgba(0,0,0,0.5));
+      text-indent: 30px;
+      left: 0;
+      top: 0;
+      position: absolute;
+      cursor: pointer;
+    }
+    &:after {
+      content: '';
+      width: 25px;
+      height: 15px;
+      cursor: pointer;
+      position: absolute;
+      z-index: 1;            
+      border: solid $solid-color;
+      border-width: 0 0 7px 7px;
+      top: 0;
+      left: -3px;
+      @include transform(rotate(0deg) scale(0));
+      @include transition(all .25s);
+    }
+  }
+  &:checked + *:after {
+    @include transform(rotate(-45deg) scale(0.4));
+    @include transition(all .25s cubic-bezier(0.68,0.55,0.265,3));
+  }
+  &:checked + *:before {
+    background: $dbc;
+  }
+}
+
+@mixin calwidth($val1, $val2){
+  width: calc(#{$val1} + #{$val2})
+}
+
+@mixin transition-hvr($t-duration, $t-type){
+  position: relative;
+  transition: all $t-duration $t-type;
+  &:before,&:after{       
+    content:'';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width:0;
+    height:0;
+    transition: width $t-duration ($t-duration*3) $t-type, height $t-duration ($t-duration*2) $t-type, border ($t-duration/5) ($t-duration*4) $t-type;
+    border: solid transparent;
+    border-width: 3px 3px 0 0;
+  }
+  &:after{
+    left: auto;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    transition: width  $t-duration $t-duration $t-type, height $t-duration $t-type, border ($t-duration/5) ($t-duration*2) $t-type;
+    border-width: 0 0 3px 3px;
+  }
+  &:hover{
+    &:before,&:after{
+      transition: width $t-duration $t-type, height $t-duration $t-duration $t-type, border ($t-duration/5) $t-type;
+      width: 100%;
+      height: 100%;         
+      border-color: $dbc;
+    }
+    &:after{
+      transition: width $t-duration ($t-duration*2) $t-type, height $t-duration ($t-duration*3)  $t-type, border ($t-duration/5) ($t-duration*2) $t-type;       
+    }
+  }
+}
+
+$shadow : 0 6px 10px -2px rgba(0, 0, 0, .25);
+$solid: #b71c1c;
+
+$solid_2: #0af;
+$dbc: #212121;
+#body {
+  @include respondToAbove(sm){
+  padding: 50px;
+  }
+      @include respondTo(xs){
+  padding: 1px;
+  }
+  background: $dbc;
+  min-height: 100vh;
+  font-family: 'Josefin Sans', sans-serif;
+  text-transform: captalize;
+  letter-spacing: 2px;
+  &, & *{
+    transition: all .25s;
+  }
+  .out-wrap {
+    position: relative;
+    
+      @include respondToAbove(sm){
+    padding: 0 50px 50px;
+    }
+    width: 90%;
+    margin: auto;
+    color: #777;
+    #payment{
+      display: flex; 
+      align-items: center;
+      justify-content: center;
+      @include respondTo(xs){
+        flex-wrap: wrap;
+        >div{
+              margin: 15px auto !important;
+    width: 100%;
+          &:first-child{
+            order: 2;
+          }
+        }
+      }
+      .details{
+        flex: 1;
+        max-width: 400px;
+        min-width: 300px;
+        margin-right: 50px;
+        .input-wrap{
+          display: flex;
+          flex-wrap: wrap;
+          label{
+            width: 100%;
+            margin: 25px 0 10px;
+          }
+          input{
+            flex: 1;
+            border: 0;
+            background: rgba(#000,.3);
+            height: 40px;
+            width: 100%;
+            text-transform: uppercase;
+            padding: 0 10px;
+            &:focus{
+              outline: none;
+              box-shadow: inset 0 0 10px rgba(0,0,0,.5);            
+              background: rgba(#000,.1);
+            }
+          }
+          &.four-num{
+            input{
+              margin: 0 10px 0 0;
+              text-align:center;
+              &:last-child{
+                margin: 0;
+              }
+            }
+          }
+        }
+        .halfbox{
+          display: flex;
+          >div:last-child{
+            margin-left: 25px;
+            input{
+              width: 50px
+            }
+          }
+          >div:first-child{
+            .twin{
+
+              position: relative;
+              display: flex;
+              &:before{
+                position: absolute;
+                left: 0;
+                right:0;
+                text-align: center;
+                pointer-events: none;
+                content: '/';
+                bottom: 5px;
+                font-size: 20px;
+              }
+              &.focusit{
+                box-shadow:  inset 0 0 10px rgba(0,0,0,.5);
+                input{
+                  box-shadow: none;           
+                  background: rgba(#000,.1);
+                }
+              }
+            }
+            input{
+              width: 40px;
+            }
+          }
+        }
+      }
+      .card{
+        >div{
+          perspective: 1000px;        
+          max-width: 350px;
+          height: 200px;
+          min-width: 320px;
+          @include respondTo(xs){
+            margin: auto;
+          }
+        }
+        &.flip{
+          >div{
+            >.clayout{
+              transform: rotateY(180deg);
+              .c-front{
+                .logo{
+                  opacity: 0;
+                  transition: none;
+                }
+              }
+            }
+          }
+        }
+        .clayout{
+          position: relative;
+          transform-style: preserve-3d;
+          &.blueit{
+
+            .c-front,.c-back{              
+              background: linear-gradient(to right, $solid_2 , darken($solid_2, 5%));
+            }
+          }
+          .c-front,.c-back{            
+            max-width: 350px;
+            width: 100%;
+            height: 200px;
+            position:absolute;
+            z-index: 2;
+            top:0;
+            right:0;
+            transform-style: preserve-3D;
+            transform-origin: center center;
+            perspective: 50px;
+            border-radius: 10px;
+            @include box-shadow($shadow);
+            background: linear-gradient(to right, $solid , darken($solid, 5%));
+            color: #fff;
+            font-size: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            >p{
+              margin: 0;
+            }
+            .chiplogo{
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: 100%;
+              >span{
+                height: 35px;
+                width: 150px;
+                &.chip{
+                  b{
+                    position: relative;
+                    height: 30px;
+                    width: 43px;
+                    display: block;
+                    border-radius: 5px;
+                    background: #f3c251;
+                    &:before{
+                      background: url(https://d30y9cdsu7xlg0.cloudfront.net/png/190185-200.png) no-repeat center / 100% 140%; content:'';
+                      opacity:.5;
+                      position: absolute;
+                      top: 0;
+                      left:0;
+                      right:0;
+                      bottom:0;
+                    }
+                  }
+                }
+                &.logo{
+                  transform: translate3d(0,0,0);
+                  b{
+                    width: 75px;
+                    margin-left: auto;
+                    display: block;
+                    height: 100%;
+                    background-size: auto 130% !important;
+                    background-position-y: center !important;
+                    transform: translateZ(0);
+                    &.master{
+                      background: url(https://new.corezoid.com/wp-content/uploads/2016/03/visa-mastercard.png) no-repeat;
+                      background-position-x: 10px;
+                    }
+                    &.visa{
+                      background: url(https://new.corezoid.com/wp-content/uploads/2016/03/visa-mastercard.png) no-repeat;
+                      background-position-x: -60px;
+                    }
+                  }
+                }
+                &:last-child{
+                  text-align: right;
+                }
+              }
+            }
+            .cnum{
+              margin: 20px 0;
+              font-size: 20px;
+              width: 100%;
+              justify-content: space-between;
+              display: flex;
+              align-items: center;
+              align-content: center;
+              font-family: monospace;
+              span{
+                letter-spacing: 5px;
+                font-family: 'Josefin Sans', sans-serif;
+                flex: 1;
+                text-align: center;
+              }
+            }
+            .cname,.cvtr{
+              min-height: 35px;
+              max-width: 215px;
+              overflow: hidden;
+              >span{
+                display: block;
+                font-size: 8px;
+                color: #ccc;
+              }
+              label{
+                text-transform: uppercase;
+              }
+            }
+            .cvtr{
+              text-align: center;
+            }
+          }
+          .c-back{
+            padding: 0;
+            align-items: initial;
+            z-index: 1;
+            transform: rotateY(180deg);
+            .topc{
+              line-height: 20px;
+              padding: 0 10px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: 100%;
+              font-size: 8px;
+              color: rgba(255,255,255,.5);
+            }
+            .backit{
+              height: 35px;
+              background: #333;
+              width: 100%;
+            }
+            .cvv{
+              margin: 0 30px;
+              width: 100%;
+              text-align: right;
+              b{
+                border-radius : 5px;
+                line-height: 25px;
+                height: 25px;
+                margin-top: 5px;
+                padding-right: 5px;
+                background: #fff;
+                display:block;
+                color: #000;
+              }
+            }
+            .chiplogo{
+              margin: 0 15px 30px 0;
+              justify-content: flex-end;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.four-num, .cnum{
+  font-family: 'roboto' !important;
+}
